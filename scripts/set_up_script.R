@@ -9,7 +9,7 @@ library(ggridges)
 library(usethis)
 library(gitcreds)
 
-#github credentials
+# github credentials
 library(usethis) 
 use_git_config(user.name  = "roninthebagel",
                user.email = "ronin@run2online.com")
