@@ -17,3 +17,14 @@ summary(raw_data)
 # generates a comprehensive summary of each column, 
 # including data types, missing values, and descriptive statistics
 skim(raw_data)
+
+# using colnames()
+# tells us the names of all columns
+colnames(raw_data)
+
+#using "janitor" package and "clean_names" function to standardise column names
+penguins_clean_names <- janitor::clean_names(raw_data) 
+
+# view new column names
+colnames(penguins_clean_names) 
+

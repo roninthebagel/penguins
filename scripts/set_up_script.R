@@ -8,6 +8,7 @@ library(mice)
 library(ggridges)
 library(usethis)
 library(gitcreds)
+library(janitor)
 
 # github credentials
 library(usethis) 
