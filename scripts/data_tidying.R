@@ -46,3 +46,7 @@ select(
 select(.data = penguins_clean_names,
        -study_name, -sample_number)
 
+# saved progress as a new tibble
+new_penguins <- select(.data = penguins_clean_names, 
+                       species, sex, flipper_length_mm, body_mass_g)
+
