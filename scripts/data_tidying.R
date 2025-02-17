@@ -124,3 +124,72 @@ new_penguins |>
 # Print only unique character strings in this variable
 penguins_clean_names |>  
   distinct(sex)
+
+# triming leading or trailing empty spaces
+penguins_clean_names |>  
+  mutate(sex = str_trim(sex))
+
+# checking species names
+penguins_clean_names |>  
+  distinct(species)
+
+# editing species names
+penguins_clean_names |>
+  mutate(species = case_when(species == "adelie penguin (pygoscelis adeliae)"|
+                               species ==  "ADELIE PENGUIN (PYGOSCELIS ADELIAE)" ~ "Adelie Penguin (Pygoscelis adeliae)",
+                             species == "gentoo penguin (pygoscelis papua)"|
+                               species ==  "GENTOO PENGUIN (PYGOSCELIS PAPUA)" ~ "Gentoo penguin (Pygoscelis papua)",
+                             species == "chinstrap penguin (pygoscelis antarctica)"|
+                               species ==  "CHINSTRAP PENGUIN (PYGOSCELIS ANTARCTICA)" ~ "Chinstrap penguin (Pygoscelis antarctica)",
+                             .default = as.character(species))) 
+
+# using stringr again to simplify the task
+# str_to_title is used to assign capital letters to the first letter of each word, we also have str_to_lower and str_to_upper
+penguins_clean_names |> 
+  mutate(species = str_to_title(species))
+
+# standardising text
+# use mutate and case_when 
+# for a statement that conditionally changes 
+# the names of the values in a variable
+penguins_clean_names |> 
+  mutate(species = stringr::word(species, 1)
+  ) |> 
+  mutate(sex = stringr::str_to_title(sex)) |> 
+  select(species, sex)
+
+# scientific names in spearate column
+penguins_clean_names |> 
+  separate(
+    species,
+    into = c("species", "full_latin_name"),
+    sep = "(?=\\()"
+  ) |> 
+  mutate(species = stringr::word(species, 1)
+
+# checking for duplications
+# check for whole duplicate 
+# rows in the data
+penguins_clean_names |> 
+  duplicated() |>  
+  sum() 
+
+# removing duplicated rows
+# Inspect duplicated rows
+penguins_clean_names |> 
+  distinct()
+
+# inspecting duplicated rows
+penguins_clean_names |>
+  dplyr::group_by(dplyr::across(everything())) |>
+  dplyr::filter(dplyr::n() > 1) |>
+  dplyr::ungroup() |> view()
+
+# applying functions to columns
+penguins_clean_names |> 
+  mutate(
+    across(.cols = c("species", "region", "island", "stage", "sex"),
+           .fns = forcats::as_factor)
+  ) |> 
+  select(where(is.factor)) |> 
+  glimpse()
