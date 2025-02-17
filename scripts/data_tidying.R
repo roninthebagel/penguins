@@ -193,3 +193,41 @@ penguins_clean_names |>
   ) |> 
   select(where(is.factor)) |> 
   glimpse()
+
+# setting factor levels
+# specicify correct order
+penguins_factor <- penguins_clean_names |> 
+  mutate(mass_range = case_when(
+    body_mass_g <= 3500 ~ "smol penguin",
+    body_mass_g >3500 & body_mass_g < 4500 ~ "mid penguin",
+    body_mass_g >= 4500 ~ "chonk penguin",
+    .default = NA)
+  )
+
+# mking bar plot from data
+penguins_factor |> 
+  drop_na(mass_range) |> 
+  ggplot(aes(x = mass_range))+
+  geom_bar()
+
+# converting characters or numeric columns to class value
+penguins_factor <- penguins_factor |> 
+  mutate(mass_range = as_factor(mass_range))
+levels(penguins_factor$mass_range)
+
+# using mutate() and as_factor() to convert the column flipper_range from class character to class factor
+# Correct the code in your script with this version
+penguins_factor <- penguins_factor |> 
+  mutate(mass_range = fct_relevel(mass_range, 
+                                  "smol penguin", 
+                                  "mid penguin", 
+                                  "chonk penguin")
+  )
+
+levels(penguins_factor$mass_range)
+
+# remaking bar plot
+penguins_factor |> 
+  drop_na(mass_range) |>  
+  ggplot(aes(x = mass_range))+
+  geom_bar()
