@@ -104,3 +104,75 @@ penguins_clean_body_mass <- penguins_clean_flipper_length |>
 # trimming leading/trailing empty spaces in sex column
 penguins_clean_sex <- penguins_clean_body_mass |>  
   mutate(sex = str_trim(sex))
+
+# formatting type column values
+penguins_format_species <- penguins_clean_sex |> 
+  mutate(species = str_to_title(species))
+
+#__________________________----
+
+# fixing typos and standardising text - standardise
+penguins_standard_columns <- penguins_format_species |> 
+  separate(
+    species,
+    into = c("species", "full_latin_name"),
+    sep = "(?=\\()"
+  ) |> 
+  mutate(species = stringr::word(species, 1))
+
+#__________________________----
+
+# duplications
+
+# checking whole data set for duplications
+penguins_standard_columns |> 
+  duplicated() |>  
+  sum() 
+# 18 duplicated rows
+
+# removing unwanted rows
+# Inspect duplicated rows
+penguins_no_dupes <- penguins_standard_columns |> 
+  distinct()
+
+# checking all unwanted rows were removed
+penguins_no_dupes |> 
+  duplicated() |>  
+  sum() 
+# 0 duplicated rows
+
+#__________________________----
+
+# factors
+
+# setting type as a factor
+penguins_no_dupes |> 
+  mutate(
+    across(.cols = c("species", "region", "island", "stage", "sex"),
+           .fns = forcats::as_factor)
+  ) |> 
+  select(where(is.factor)) |> 
+  glimpse()
+# we only do this with worded values, not numerical ones
+
+# specifying correct order
+penguins_factor_specific <- penguins_no_dupes |> 
+  mutate(mass_range = case_when(
+    body_mass_g <= 3500 ~ "smol penguin",
+    body_mass_g >3500 & body_mass_g < 4500 ~ "mid penguin",
+    body_mass_g >= 4500 ~ "chonk penguin",
+    .default = NA)
+  )
+
+# bar creation
+penguins_factor_bar <- penguins_factor_specific |> 
+  drop_na(mass_range) |> 
+  ggplot(aes(x = mass_range))+
+  geom_bar()
+
+ggsave("figures/penguins_factor_bar.pdf",
+       plot = penguins_factor_bar, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
