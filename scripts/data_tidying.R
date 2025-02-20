@@ -194,7 +194,7 @@ penguins_factor <- penguins_factor |>
 levels(penguins_factor$mass_range)
 
 # new bar plot
-_penguins_factor_bar_new <- penguins_factor |> 
+penguins_factor_bar_new <- penguins_factor |> 
   drop_na(mass_range) |>  
   ggplot(aes(x = mass_range))+
   geom_bar()
