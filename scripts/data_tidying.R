@@ -332,6 +332,13 @@ penguins_dates |>
 penguins_clean <- penguins_dates|> 
   drop_na(culmen_length_mm, culmen_depth_mm, flipper_length_mm, body_mass_g, sex)
 
+#__________________________----
+
+# exploring patterns of missing data
+
+# graphs and script gets messy, but this bit isn't really required
+# the data should now be clean, this bit is more statistical analysis on missing data
+
 # Visualise missing data
 penguins_missing_data_plot <- naniar::vis_miss(penguins_clean)
 
