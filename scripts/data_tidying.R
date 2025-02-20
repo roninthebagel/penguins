@@ -208,6 +208,19 @@ ggsave("figures/penguins_factor_bar_new.pdf",
 
 #__________________________----
 
+# dates
+
+# minimum and maximum dates
+penguins_no_dupes |> 
+  summarise(min_date=min(date_egg),
+            max_date=max(date_egg))
+
+# extracting dates
+penguins_dates <- penguins_no_dupes |> 
+  mutate(year = lubridate::year(date_egg))
+
+#__________________________----
+
 # missing data
 
 # identifying missing data in partners column
