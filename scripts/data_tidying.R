@@ -223,4 +223,159 @@ penguins_dates <- penguins_no_dupes |>
 
 # missing data
 
-# identifying missing data in partners column
+# identifying missing data in study name column
+penguins_dates |>
+  filter(is.na(study_name)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in sample number column
+penguins_dates |>
+  filter(is.na(sample_number)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in species column
+penguins_dates |>
+  filter(is.na(species)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in full latin name column
+penguins_dates |>
+  filter(is.na(full_latin_name)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in region column
+penguins_dates |>
+  filter(is.na(region)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in island column
+penguins_dates |>
+  filter(is.na(island)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in stage column
+penguins_dates |>
+  filter(is.na(stage)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in individual id column
+penguins_dates |>
+  filter(is.na(individual_id)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in clutch completion column
+penguins_dates |>
+  filter(is.na(clutch_completion)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in date egg column
+penguins_dates |>
+  filter(is.na(date_egg)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# no missing data
+
+# identifying missing data in culmen length column
+penguins_dates |>
+  filter(is.na(culmen_length_mm)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# 2 missing data points
+
+# identifying missing data in culmen depth column
+penguins_dates |>
+  filter(is.na(culmen_depth_mm)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# 2 missing data points
+
+# identifying missing data in flipper length column
+penguins_dates |>
+  filter(is.na(flipper_length_mm)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# 2 missing data points
+
+# identifying missing data in body mass column
+penguins_dates |>
+  filter(is.na(body_mass_g)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# 13 missing data points
+
+# identifying missing data in sex column
+penguins_dates |>
+  filter(is.na(sex)) |> 
+  group_by(species, sex, island) |>                 
+  summarise(n_missing = n())    
+# 5 missing data points
+
+# removing missing data
+penguins_clean <- penguins_dates|> 
+  drop_na(culmen_length_mm, culmen_depth_mm, flipper_length_mm, body_mass_g, sex)
+
+# Visualise missing data
+penguins_missing_data_plot <- naniar::vis_miss(penguins_clean)
+
+ggsave("figures/penguins_missing_data_plot.pdf",
+       plot = penguins_missing_data_plot, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
+
+# Visualize missing data by variable
+penguins_missing_data_variable_plot <- gg_miss_var(penguins_clean)
+
+ggsave("figures/penguins_missing_data_variable_plot.pdf",
+       plot = penguins_missing_data_variable_plot, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
+
+# exploring patterns of missingness
+# Explore missing data patterns
+miss_var_summary(penguins_clean)
+
+penguins_clean |> 
+  select(species, island, sex) |> 
+  group_by(species, island) |> 
+  miss_var_summary()
+
+penguins_missingness_pattern_plot <- gg_miss_upset(penguins_clean)
+
+ggsave("figures/penguins_missingness_pattern_plot.pdf",
+       plot = penguins_missingness_pattern_plot, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
+
+# Explore missing data by species
+penguins_missing_data_species <- gg_miss_fct(penguins_clean, fct = island)
+
+ggsave("figures/penguins_missing_data_species_plot.pdf",
+       plot = penguins_missing_data_species, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
