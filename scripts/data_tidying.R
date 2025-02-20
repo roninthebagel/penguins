@@ -176,3 +176,38 @@ ggsave("figures/penguins_factor_bar.pdf",
        height = 10, 
        units = "cm", 
        device = "pdf")
+
+# converting character and numeric columns to class factor
+penguins_factor <- penguins_factor_specific |> 
+  mutate(mass_range = as_factor(mass_range))
+
+levels(penguins_factor$mass_range)
+
+# Correct the code in your script with this version
+penguins_factor <- penguins_factor |> 
+  mutate(mass_range = fct_relevel(mass_range, 
+                                  "smol penguin", 
+                                  "mid penguin", 
+                                  "chonk penguin")
+  )
+
+levels(penguins_factor$mass_range)
+
+# new bar plot
+_penguins_factor_bar_new <- penguins_factor |> 
+  drop_na(mass_range) |>  
+  ggplot(aes(x = mass_range))+
+  geom_bar()
+
+ggsave("figures/penguins_factor_bar_new.pdf",
+       plot = penguins_factor_bar_new, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
+
+#__________________________----
+
+# missing data
+
+# identifying missing data in partners column
