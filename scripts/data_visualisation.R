@@ -114,3 +114,12 @@ ggsave("data_visualisation_figures/barchart_easier_to_compare_plot.pdf",
 
 #__________________________----
 
+# regression line misuse
+# when we haven’t established a cause and effect relationship, we should consider not including a regression line and present the simple scatterplot instead
+
+# model mismatch with geom_smooth
+# the geom_smooth function will default to fit a “loess” regression - but even when set to “lm” it is fitting individual regression models for each group in turn
+
+#__________________________----
+
+
