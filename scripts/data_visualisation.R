@@ -77,3 +77,40 @@ ggsave("data_visualisation_figures/log_scale_plot.pdf",
 
 #__________________________----
 
+# pie chart script - not recommended as hard to compare variables
+
+# simulating data
+set.seed(123)
+data <- data.frame(
+  Category = factor(c("A", "B", "C", "D", "E")),
+  Value = c(20, 22, 18, 25, 15)
+)
+
+# Gaffe (Pie Chart)
+piechart <- ggplot(data, aes(x = "", y = Value, fill = Category)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start=0) +
+  theme_void() +
+  ggtitle("Pie Chart (Difficult to Compare)")
+
+ggsave("data_visualisation_figures/piechart_difficult_to_compare_plot.pdf",
+       plot = piechart, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
+
+# pie chart alternative - bar chart
+barchart <- ggplot(data, aes(x = Category, y = Value)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Bar Chart (Easier Comparison)")
+
+ggsave("data_visualisation_figures/barchart_easier_to_compare_plot.pdf",
+       plot = barchart, 
+       width = 15,
+       height = 10, 
+       units = "cm", 
+       device = "pdf")
+
+#__________________________----
+
